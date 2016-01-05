@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+#include <memory>
+
 #include "Thread.h"
 #include "IThread.h"
 #include "IRunnable.h"
@@ -49,7 +51,7 @@ static void ResultCallBack(const char *data)
 
 static void DoMoreWork() 
 {
-    for (int i = 0; i < 11; i ++) {
+    for (int i = 0; i < 15; i ++) {
         printf("MainThread: Do more work...\n");
         sleep(1);
     }
@@ -57,22 +59,19 @@ static void DoMoreWork()
 
 int main(int argc, char *argv[])
 {
-    IThread *thread;
-    CalcPI *calc;
-    CalcMatrix *matrix;
+    std::shared_ptr<IThread> thread;
+    std::shared_ptr<CalcPI> calc;
+    std::shared_ptr<CalcMatrix> matrix;
 
-    thread = new Thread();
-    calc = new CalcPI(ResultCallBack);
+    thread = std::make_shared<Thread>();
+    calc = std::make_shared<CalcPI>(ResultCallBack);
     thread->Dispatch(calc);
 
-    matrix = new CalcMatrix(ResultCallBack);
+    matrix = std::make_shared<CalcMatrix>(ResultCallBack);
     thread->Dispatch(matrix);
 
     DoMoreWork();
 
-    delete calc;
-    delete matrix;
-    delete thread;
     return 0;
 }
 

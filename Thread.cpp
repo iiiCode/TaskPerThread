@@ -15,7 +15,7 @@ Thread::~Thread()
     pthread_join(mPtid, NULL);
 }
 
-void Thread::Dispatch(IRunnable *runnable)
+void Thread::Dispatch(std::shared_ptr<IRunnable> runnable)
 {
-    pthread_create(&mPtid, NULL, _DoThreadWork, static_cast<void *>(runnable));
+    pthread_create(&mPtid, NULL, _DoThreadWork, static_cast<void *>(runnable.get()));
 }

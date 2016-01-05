@@ -2,6 +2,7 @@
 #define _THREAD_H_
 
 #include <pthread.h>
+#include <memory>
 #include "IThread.h"
 
 class Thread : public IThread {
@@ -9,7 +10,7 @@ class Thread : public IThread {
         Thread() {}
         virtual ~Thread();
 
-        virtual void Dispatch(IRunnable *runnable) override;
+        virtual void Dispatch(std::shared_ptr<IRunnable> runnable) override;
 
     private:
         pthread_t mPtid;
